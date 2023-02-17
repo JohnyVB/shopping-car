@@ -1,20 +1,22 @@
-import { useState } from 'react';
+import { useId, useContext } from 'react';
+import { FiltersContext } from '../context/FiltersContext';
 import './Filters.css';
 
-export const Filters = ({setFilters}) => {
-    const [minPrice, setMinPrice] = useState(0);
+export const Filters = () => {
+    const { filters, setFilters } = useContext(FiltersContext);
+    const minPriceFilterId = useId();
+    const categoryFilterId = useId();
 
     const handledMinPrice = (event) => {
-        setMinPrice(event.target.value);
         setFilters(prev => ({
-            ... prev,
+            ...prev,
             minPrice: event.target.value
         }))
     }
 
     const handledCategory = (event) => {
         setFilters(prev => ({
-            ... prev,
+            ...prev,
             category: event.target.value
         }))
     }
@@ -22,13 +24,13 @@ export const Filters = ({setFilters}) => {
     return (
         <section className="filters">
             <div>
-                <label htmlFor="price">Price</label>
-                <input type="range" id="price" min={0} max={1000} onChange={handledMinPrice} />
-                <span>${minPrice}</span>
+                <label htmlFor={minPriceFilterId}>Price</label>
+                <input type="range" id={minPriceFilterId} min={0} max={1000} value={filters.minPrice} onChange={handledMinPrice} />
+                <span>${filters.minPrice}</span>
             </div>
             <div>
-                <label htmlFor="category">Category</label>
-                <select id="category" onChange={handledCategory}>
+                <label htmlFor={categoryFilterId}>Category</label>
+                <select id={categoryFilterId} onChange={handledCategory}>
                     <option value="all">All</option>
                     <option value="laptops">Laptops</option>
                     <option value="smartphones">Smartphones</option>
